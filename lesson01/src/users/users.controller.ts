@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 
 @Controller('users') // /users
 export class UsersController {
@@ -11,8 +11,8 @@ export class UsersController {
     DELETE /users/:id
     */
 
-  @Get() // GET /users
-  findAll() {
+  @Get() // GET /users or /users?role=value&name=value
+  findAll(@Query('role') role?: 'INTERN' | 'ENGINEER' | 'ADMIN') {
     return [];
   }
 
