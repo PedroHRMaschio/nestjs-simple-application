@@ -1,6 +1,9 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+
 
 @Controller('users') // /users
 export class UsersController {
@@ -28,22 +31,22 @@ export class UsersController {
   // The application will think the interns route is an id parameter.
 
   @Get(':id') // GET /users/:id
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.findOne(id);
   }
 
   @Post() // POST /users
-  create(@Body() user: {name: string, email: string, role: 'INTERN' | 'ENGINEER' | 'ADMIN'}) {
+  create(@Body() user: CreateUserDto) {
     return this.usersService.create(user);
   }
 
   @Patch(':id') // PATCH /users/:id
-  update(@Param('id') id: string, @Body() userUpdate: {name?: string, email?: string, role?: 'INTERN' | 'ENGINEER' | 'ADMIN'}) {
+  update(@Param('id', ParseIntPipe) id: string, @Body() userUpdate: UpdateUserDto) {
     return this.usersService.update(parseInt(id), userUpdate);
   }
 
   @Delete(':id') // DELETE /users/:id
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseIntPipe) id: string) {
     return this.usersService.remove(parseInt(id));
   }
 }

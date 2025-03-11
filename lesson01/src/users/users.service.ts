@@ -1,5 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -43,13 +45,13 @@ export class UsersService {
         return this.users;
     }
 
-    findOne(id: string) {
-        const user = this.users.find(user => user.id === parseInt(id));
+    findOne(id: number) {
+        const user = this.users.find(user => user.id === id);
 
         return user;
     }
 
-    create(user: { name: string, email: string, role: 'INTERN' | 'ENGINEER' | 'ADMIN' }) {
+    create(user: CreateUserDto) {
         const newUser = { id: this.users.length + 1, ...user };
 
         this.users.push(newUser);
@@ -57,7 +59,7 @@ export class UsersService {
         return newUser;
     }
 
-    update(id: number, updateUser: { name?: string, email?: string, role?: 'INTERN' | 'ENGINEER' | 'ADMIN' }) {
+    update(id: number, updateUser: UpdateUserDto) {
         this.users = this.users.map(user => {
             if (user.id === id) {
                 return { ...user, ...updateUser };
@@ -65,11 +67,11 @@ export class UsersService {
             return user;
         });
 
-        return this.findOne(id.toString());
+        return this.findOne(id);
     }
 
     remove(id: number) {
-        const user = this.findOne(id.toString());
+        const user = this.findOne(id);
         this.users = this.users.filter(user => user.id !== id);
 
         return user;
